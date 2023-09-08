@@ -1,0 +1,26 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "fold laundry",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "wash car",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "make dinner",
+      "completed": true
+    },
+    {
+      "title": "TEST",
+      "id": "eb9c3ce5-ff40-4bbc-b465-0f892ff0a4c3",
+      "completed": false,
+      "createdAt": "9/8/2023, 12:30:49 PM",
+      "updatedAt": "9/8/2023, 12:30:49 PM"
+    }
+  ]
+}
