@@ -2,12 +2,20 @@ const { v4: uuid } = require('uuid');
 const Todo = require('../models/Todo');
 
 const getAllTodos = () => {
-  const allTodos = Todo.getAllTodos();
-  return allTodos;
+  try {
+    const allTodos = Todo.getAllTodos();
+    return allTodos;
+  } catch (error) {
+    throw error;
+  }
 };
 const getOneTodo = (todoID) => {
-  const todo = Todo.getOneTodo(todoID);
-  return todo;
+  try {
+    const todo = Todo.getOneTodo(todoID);
+    return todo;
+  } catch (error) {
+    throw error;
+  }
 };
 const createTodo = (newTodo) => {
   const todoToInsert = {
@@ -17,16 +25,27 @@ const createTodo = (newTodo) => {
     createdAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
     updatedAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
   };
-
-  const createdTodo = Todo.createOneTodo(todoToInsert);
-  return createdTodo;
+  try {
+    const createdTodo = Todo.createOneTodo(todoToInsert);
+    return createdTodo;
+  } catch (error) {
+    throw error;
+  }
 };
 const updateTodo = (todoID, changes) => {
-  const updatedTodo = Todo.updateOneTodo(todoID, changes);
-  return updatedTodo;
+  try {
+    const updatedTodo = Todo.updateOneTodo(todoID, changes);
+    return updatedTodo;
+  } catch (error) {
+    throw error;
+  }
 };
 const deleteTodo = (todoID) => {
-  Todo.deleteOneTodo(todoID);
+  try {
+    Todo.deleteOneTodo(todoID);
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

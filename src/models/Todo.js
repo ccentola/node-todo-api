@@ -2,45 +2,74 @@ const DB = require('./db.json');
 const { saveToDatabase } = require('../models/utils');
 
 const getAllTodos = () => {
-  return DB.todos;
+  try {
+    return DB.todos;
+  } catch (error) {
+    throw { status: 500, message: error };
+  }
 };
 const createOneTodo = (newTodo) => {
   // push new todo to existing todos
-  DB.todos.push(newTodo);
-  saveToDatabase(DB);
-  return newTodo;
+  try {
+    DB.todos.push(newTodo);
+    saveToDatabase(DB);
+    return newTodo;
+  } catch (error) {
+    throw { status: 500, message: error?.message || error };
+  }
 };
 
 const getOneTodo = (todoID) => {
-  const todo = DB.todos.find((todo) => todo.id === todoID);
-  if (!todo) {
-    return;
+  try {
+    const todo = DB.todos.find((todo) => todo.id === todoID);
+    if (!todo) {
+      throw {
+        status: 400,
+        message: `Can't find todo with the id '${todoID}'`,
+      };
+    }
+    return todo;
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
   }
-  return todo;
 };
 
 const updateOneTodo = (todoID, changes) => {
-  const indexForUpdate = DB.todos.findIndex((todo) => todo.id === todoID);
-  if (indexForUpdate === -1) {
-    return;
+  try {
+    const indexForUpdate = DB.todos.findIndex((todo) => todo.id === todoID);
+    if (indexForUpdate === -1) {
+      throw {
+        status: 400,
+        message: `Can't find todo with the id '${todoID}'`,
+      };
+    }
+    const updatedTodo = {
+      ...DB.todos[indexForUpdate],
+      ...changes,
+      updatedAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
+    };
+    DB.todos[indexForUpdate] = updatedTodo;
+    saveToDatabase(DB);
+    return updatedTodo;
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
   }
-  const updatedTodo = {
-    ...DB.todos[indexForUpdate],
-    ...changes,
-    updatedAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
-  };
-  DB.todos[indexForUpdate] = updatedTodo;
-  saveToDatabase(DB);
-  return updatedTodo;
 };
 
 const deleteOneTodo = (todoID) => {
-  const indexForDeletion = DB.todos.findIndex((todo) => todo.id === todoID);
-  if (indexForDeletion === -1) {
-    return;
+  try {
+    const indexForDeletion = DB.todos.findIndex((todo) => todo.id === todoID);
+    if (indexForDeletion === -1) {
+      throw {
+        status: 400,
+        message: `Can't find todo with the id '${todoID}'`,
+      };
+    }
+    DB.todos.splice(indexForDeletion, 1);
+    saveToDatabase(DB);
+  } catch (error) {
+    throw { status: error?.status || 500, message: error?.message || error };
   }
-  DB.todos.splice(indexForDeletion, 1);
-  saveToDatabase(DB);
 };
 
 module.exports = {

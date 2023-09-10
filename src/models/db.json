@@ -21,6 +21,13 @@
       "completed": false,
       "createdAt": "9/8/2023, 12:30:49 PM",
       "updatedAt": "9/8/2023, 12:30:49 PM"
+    },
+    {
+      "title": "fold laundry",
+      "id": "4d6f5a23-7532-418d-bbbb-2d59e30d70fa",
+      "completed": true,
+      "createdAt": "9/10/2023, 12:44:55 PM",
+      "updatedAt": "9/10/2023, 12:45:44 PM"
     }
   ]
 }
