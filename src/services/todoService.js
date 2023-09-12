@@ -1,48 +1,46 @@
 const { v4: uuid } = require('uuid');
 const Todo = require('../models/Todo');
 
-const getAllTodos = () => {
+const getAllTodos = async () => {
   try {
-    const allTodos = Todo.getAllTodos();
+    const allTodos = await Todo.getAllTodos();
+    //
     return allTodos;
   } catch (error) {
     throw error;
   }
 };
-const getOneTodo = (todoID) => {
+const getOneTodo = async (todoId) => {
   try {
-    const todo = Todo.getOneTodo(todoID);
+    const todo = await Todo.getOneTodo(todoId);
+
     return todo;
   } catch (error) {
     throw error;
   }
 };
-const createTodo = (newTodo) => {
+const createTodo = async (newTodo) => {
   const todoToInsert = {
     ...newTodo,
-    id: uuid(),
-    completed: false,
-    createdAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
-    updatedAt: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
   };
   try {
-    const createdTodo = Todo.createOneTodo(todoToInsert);
+    const createdTodo = await Todo.createOneTodo(todoToInsert);
     return createdTodo;
   } catch (error) {
     throw error;
   }
 };
-const updateTodo = (todoID, changes) => {
+const updateTodo = async (todoId, changes) => {
   try {
-    const updatedTodo = Todo.updateOneTodo(todoID, changes);
+    const updatedTodo = await Todo.updateOneTodo(todoId, changes);
     return updatedTodo;
   } catch (error) {
     throw error;
   }
 };
-const deleteTodo = (todoID) => {
+const deleteTodo = async (todoId) => {
   try {
-    Todo.deleteOneTodo(todoID);
+    await Todo.deleteOneTodo(todoId);
   } catch (error) {
     throw error;
   }

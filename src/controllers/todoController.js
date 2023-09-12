@@ -1,8 +1,8 @@
 const todoService = require('../services/todoService');
 
-const getAllTodos = (req, res) => {
+const getAllTodos = async (req, res) => {
   try {
-    const allTodos = todoService.getAllTodos();
+    const allTodos = await todoService.getAllTodos();
     res.send({ status: 'OK', data: allTodos });
   } catch (error) {
     res
@@ -11,18 +11,19 @@ const getAllTodos = (req, res) => {
   }
 };
 
-const getOneTodo = (req, res) => {
+const getOneTodo = async (req, res) => {
   const {
-    params: { todoID },
+    params: { todoId },
   } = req;
-  if (!todoID) {
+  if (!todoId) {
     res.status(400).send({
       status: 'FAILED',
-      data: { error: "Parameter ':todoID' can not be empty" },
+      data: { error: "Parameter ':todoId' can not be empty" },
     });
   }
   try {
-    const todo = todoService.getOneTodo(todoID);
+    const todo = await todoService.getOneTodo(todoId);
+
     res.send({ status: 'OK', data: todo });
   } catch (error) {
     res
@@ -31,15 +32,15 @@ const getOneTodo = (req, res) => {
   }
 };
 
-const createTodo = (req, res) => {
+const createTodo = async (req, res) => {
   // destructure body from request
   const { body } = req;
   // check if body contains a title
-  if (!body.title) {
+  if (!body.title || !body.user_id) {
     res.status(400).send({
       status: 'FAILED',
       data: {
-        error: "'Title' is missing or is empty in request body",
+        error: "'title' or 'user_id' is missing or is empty in request body",
       },
     });
   }
@@ -47,9 +48,10 @@ const createTodo = (req, res) => {
   // and default false for completed
   const newTodo = {
     title: body.title,
+    user_id: body.user_id,
   };
   try {
-    const createdTodo = todoService.createTodo(newTodo);
+    const createdTodo = await todoService.createTodo(newTodo);
     res.status(201).send({ status: 'OK', data: createdTodo });
   } catch (error) {
     res
@@ -58,19 +60,19 @@ const createTodo = (req, res) => {
   }
 };
 
-const updateTodo = (req, res) => {
+const updateTodo = async (req, res) => {
   const {
     body,
-    params: { todoID },
+    params: { todoId },
   } = req;
-  if (!todoID) {
+  if (!todoId) {
     res.status(400).send({
       status: 'FAILED',
-      data: { error: "Parameter ':todoID' can not be empty" },
+      data: { error: "Parameter ':todoId' can not be empty" },
     });
   }
   try {
-    const updatedTodo = todoService.updateTodo(todoID, body);
+    const updatedTodo = await todoService.updateTodo(todoId, body);
     res.send({ status: 'OK', data: updatedTodo });
   } catch (error) {
     res
@@ -79,18 +81,18 @@ const updateTodo = (req, res) => {
   }
 };
 
-const deleteTodo = (req, res) => {
+const deleteTodo = async (req, res) => {
   const {
-    params: { todoID },
+    params: { todoId },
   } = req;
-  if (!todoID) {
+  if (!todoId) {
     res.status(400).send({
       status: 'FAILED',
-      data: { error: "Parameter ':todoID' can not be empty" },
+      data: { error: "Parameter ':todoId' can not be empty" },
     });
   }
   try {
-    todoService.deleteTodo(todoID);
+    await todoService.deleteTodo(todoId);
     res.status(204).send({ status: 'OK' });
   } catch (error) {
     res
